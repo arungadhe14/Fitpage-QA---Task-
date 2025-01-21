@@ -1,0 +1,67 @@
+//simple test automation flow In java and Selenium 
+
+package com.MyTest;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class EventPage {
+	WebDriver d;
+
+	@BeforeTest
+	public void setUp() {
+		d = new ChromeDriver();
+		d.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		d.manage().window().maximize();
+
+		d.get("https://www.indiarunning.com/");
+
+	}
+
+	@Test
+	public void runTest() throws InterruptedException {
+		selectEvent();
+		chageWindwo();
+		selectCategory();
+		registration();
+
+	}
+
+	public void selectEvent() {
+		JavascriptExecutor js = (JavascriptExecutor) d;
+		js.executeScript("window.scrollBy(0,700)", "");
+		System.out.println(d.getWindowHandle());
+		d.findElement(By.xpath("html/body/div/div[2]/div[5]/div/a[2]")).click();
+
+	}
+
+	public void chageWindwo() {
+
+		Set<String> allWindows = d.getWindowHandles();
+		ArrayList<String> tabs = new ArrayList<>(allWindows);
+		d.switchTo().window(tabs.get(1));
+
+	}
+
+	public void selectCategory() throws InterruptedException {
+		Thread.sleep(2000);
+		d.findElement(By.xpath("html/body/div[3]/div/div[3]/div[2]/div/div[4]/p")).click();// select categroy
+
+		d.findElement(By.xpath("//div[@id=\"root\"]/div/div[4]/div/div[2]/div/p")).click();
+	}
+
+	public void registration() {
+		d.findElement(By.cssSelector("input[type=\"tel\"]")).sendKeys("9988776655");
+		d.findElement(By
+				.xpath("/html[1]/body[1]/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/form[1]/div[4]/p[1]"))
+				.click();
+
+	}
+
+}
